@@ -136,8 +136,15 @@ class SamAdapterFunctionsScope(storageManager: StorageManager) : KtScope by KtSc
         override fun hasStableParameterNames() = sourceFunction.hasStableParameterNames()
         override fun hasSynthesizedParameterNames() = sourceFunction.hasSynthesizedParameterNames()
 
-        override fun createSubstitutedCopy(newOwner: DeclarationDescriptor, original: FunctionDescriptor?, kind: CallableMemberDescriptor.Kind): MyFunctionDescriptor {
-            return MyFunctionDescriptor(containingDeclaration, original as SimpleFunctionDescriptor?, annotations, name, kind, source).apply {
+        override fun createSubstitutedCopy(
+                newOwner: DeclarationDescriptor,
+                original: FunctionDescriptor?,
+                kind: CallableMemberDescriptor.Kind,
+                newName: Name?
+        ): MyFunctionDescriptor {
+            return MyFunctionDescriptor(
+                    containingDeclaration, original as SimpleFunctionDescriptor?, annotations, newName ?: name, kind, source
+            ).apply {
                 sourceFunction = this@MyFunctionDescriptor.sourceFunction
             }
         }

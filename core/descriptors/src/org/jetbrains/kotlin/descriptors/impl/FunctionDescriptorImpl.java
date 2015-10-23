@@ -298,7 +298,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
             @Nullable KotlinType newExtensionReceiverParameterType,
             @NotNull KotlinType newReturnType
     ) {
-        FunctionDescriptorImpl substitutedDescriptor = createSubstitutedCopy(newOwner, original, kind);
+        FunctionDescriptorImpl substitutedDescriptor = createSubstitutedCopy(newOwner, original, kind, null);
 
         List<TypeParameterDescriptor> originalTypeParameters = getTypeParameters();
         List<TypeParameterDescriptor> substitutedTypeParameters = new ArrayList<TypeParameterDescriptor>(originalTypeParameters.size());
@@ -372,7 +372,8 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
     protected abstract FunctionDescriptorImpl createSubstitutedCopy(
             @NotNull DeclarationDescriptor newOwner,
             @Nullable FunctionDescriptor original,
-            @NotNull Kind kind
+            @NotNull Kind kind,
+            @Nullable Name newName
     );
 
     @Override

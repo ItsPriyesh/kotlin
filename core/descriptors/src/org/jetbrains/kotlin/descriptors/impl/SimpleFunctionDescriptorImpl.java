@@ -76,14 +76,15 @@ public class SimpleFunctionDescriptorImpl extends FunctionDescriptorImpl impleme
     protected FunctionDescriptorImpl createSubstitutedCopy(
             @NotNull DeclarationDescriptor newOwner,
             @Nullable FunctionDescriptor original,
-            @NotNull Kind kind
+            @NotNull Kind kind,
+            @Nullable Name newName
     ) {
         return new SimpleFunctionDescriptorImpl(
                 newOwner,
                 (SimpleFunctionDescriptor) original,
                 // TODO : safeSubstitute
                 getAnnotations(),
-                getName(),
+                newName != null ? newName : getName(),
                 kind,
                 SourceElement.NO_SOURCE
         );
@@ -103,5 +104,11 @@ public class SimpleFunctionDescriptorImpl extends FunctionDescriptorImpl impleme
                 isOperator(), isInfix(), isExternal(), isInline(), isTailrec(),
                 null, copyOverrides, kind
         );
+    }
+
+    @NotNull
+    @Override
+    public SimpleFunctionDescriptor createRenamedCopy(@NotNull Name name) {
+        return (SimpleFunctionDescriptor) createSubstitutedCopy(getContainingDeclaration(), null, getKind(), name);
     }
 }

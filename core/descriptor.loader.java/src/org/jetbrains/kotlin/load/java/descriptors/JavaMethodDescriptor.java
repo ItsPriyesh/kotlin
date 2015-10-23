@@ -113,13 +113,14 @@ public class JavaMethodDescriptor extends SimpleFunctionDescriptorImpl implement
     protected JavaMethodDescriptor createSubstitutedCopy(
             @NotNull DeclarationDescriptor newOwner,
             @Nullable FunctionDescriptor original,
-            @NotNull Kind kind
+            @NotNull Kind kind,
+            @Nullable Name newName
     ) {
         JavaMethodDescriptor result = new JavaMethodDescriptor(
                 newOwner,
                 (SimpleFunctionDescriptor) original,
                 getAnnotations(),
-                getName(),
+                newName != null ? newName : getName(),
                 kind,
                 original != null ? original.getSource() : SourceElement.NO_SOURCE
         );
