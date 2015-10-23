@@ -617,7 +617,7 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
 
         KtScope parametersScope = null;
         if (oldDescriptor instanceof ConstructorDescriptor && containingDeclaration instanceof ClassDescriptorWithResolutionScopes)
-            parametersScope = ScopeUtilsKt.asJetScope(((ClassDescriptorWithResolutionScopes) containingDeclaration).getScopeForInitializerResolution());
+            parametersScope = ScopeUtilsKt.asKtScope(((ClassDescriptorWithResolutionScopes) containingDeclaration).getScopeForInitializerResolution());
         else if (function instanceof KtFunction)
             parametersScope = CallableRefactoringKt.getBodyScope((KtFunction) function, bindingContext);
 
