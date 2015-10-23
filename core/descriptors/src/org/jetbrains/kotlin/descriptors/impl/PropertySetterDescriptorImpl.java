@@ -47,9 +47,22 @@ public class PropertySetterDescriptorImpl extends PropertyAccessorDescriptorImpl
             @Nullable PropertySetterDescriptor original,
             @NotNull SourceElement source
     ) {
-        super(modality, visibility, correspondingProperty, annotations, Name.special("<set-" + correspondingProperty.getName() + ">"),
+        super(modality, visibility, correspondingProperty, annotations, getName(correspondingProperty),
               hasBody, isDefault, isExternal, kind, source);
         this.original = original != null ? original : this;
+    }
+
+    @NotNull
+    private static Name getName(@NotNull PropertyDescriptor correspondingProperty) {
+        return Name.special("<set-" + correspondingProperty.getName() + ">");
+    }
+
+    public PropertySetterDescriptorImpl(
+            @Nullable FunctionDescriptor accessorFunction,
+            @NotNull PropertyDescriptor correspondingProperty
+    ) {
+        super(accessorFunction, correspondingProperty, getName(correspondingProperty));
+        original = this;
     }
 
     public void initialize(@NotNull ValueParameterDescriptor parameter) {

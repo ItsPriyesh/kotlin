@@ -38,7 +38,10 @@ public abstract class PropertyAccessorDescriptorImpl extends DeclarationDescript
     private final Kind kind;
     private Visibility visibility;
 
-    public PropertyAccessorDescriptorImpl(
+    @Nullable
+    private final FunctionDescriptor accessorFunction;
+
+    protected PropertyAccessorDescriptorImpl(
             @NotNull Modality modality,
             @NotNull Visibility visibility,
             @NotNull PropertyDescriptor correspondingProperty,
@@ -58,6 +61,23 @@ public abstract class PropertyAccessorDescriptorImpl extends DeclarationDescript
         this.isDefault = isDefault;
         this.isExternal = isExternal;
         this.kind = kind;
+        this.accessorFunction = null;
+    }
+
+    protected PropertyAccessorDescriptorImpl(
+            @Nullable FunctionDescriptor accessorFunction,
+            @NotNull PropertyDescriptor correspondingProperty,
+            @NotNull Name name
+    ) {
+        super(correspondingProperty.getContainingDeclaration(), accessorFunction.getAnnotations(), name, accessorFunction.getSource());
+        this.modality = accessorFunction.getModality();
+        this.visibility = accessorFunction.getVisibility();
+        this.correspondingProperty = correspondingProperty;
+        this.hasBody = true;
+        this.isDefault = false;
+        this.isExternal = accessorFunction.isExternal();
+        this.kind = accessorFunction.getKind();
+        this.accessorFunction = accessorFunction;
     }
 
     @Override
@@ -189,4 +209,9 @@ public abstract class PropertyAccessorDescriptorImpl extends DeclarationDescript
     @NotNull
     @Override
     public abstract PropertyAccessorDescriptor getOriginal();
+
+    @Nullable
+    public FunctionDescriptor getAccessorFunction() {
+        return accessorFunction;
+    }
 }

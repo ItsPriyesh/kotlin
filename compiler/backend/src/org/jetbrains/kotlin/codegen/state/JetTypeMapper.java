@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.codegen.binding.MutableClosure;
 import org.jetbrains.kotlin.codegen.binding.PsiCodegenPredictor;
 import org.jetbrains.kotlin.codegen.signature.BothSignatureWriter;
 import org.jetbrains.kotlin.descriptors.*;
+import org.jetbrains.kotlin.descriptors.impl.PropertyAccessorDescriptorImpl;
 import org.jetbrains.kotlin.fileClasses.FileClasses;
 import org.jetbrains.kotlin.fileClasses.JvmFileClassUtil;
 import org.jetbrains.kotlin.fileClasses.JvmFileClassesProvider;
@@ -953,6 +954,14 @@ public class JetTypeMapper {
                 return mapSignature(overridden, kind, overridden.getValueParameters());
             }
         }
+
+        if (f.getOriginal() instanceof PropertyAccessorDescriptorImpl) {
+            FunctionDescriptor accessorFunction = ((PropertyAccessorDescriptorImpl) f.getOriginal()).getAccessorFunction();
+            if (accessorFunction != null) {
+                return mapSignature(accessorFunction, kind);
+            }
+        }
+
         if (f instanceof ConstructorDescriptor) {
             return mapSignature(f, kind, f.getOriginal().getValueParameters());
         }

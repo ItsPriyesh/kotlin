@@ -46,11 +46,24 @@ public class PropertyGetterDescriptorImpl extends PropertyAccessorDescriptorImpl
             @NotNull SourceElement source
     )
     {
-        super(modality, visibility, correspondingProperty, annotations, Name.special("<get-" + correspondingProperty.getName() + ">"),
+        super(modality, visibility, correspondingProperty, annotations, getName(correspondingProperty),
               hasBody, isDefault, isExternal, kind, source);
         this.original = original != null ? original : this;
     }
-    
+
+    @NotNull
+    private static Name getName(@NotNull PropertyDescriptor correspondingProperty) {
+        return Name.special("<get-" + correspondingProperty.getName() + ">");
+    }
+
+    public PropertyGetterDescriptorImpl(
+            @Nullable FunctionDescriptor accessorFunction,
+            @NotNull PropertyDescriptor correspondingProperty
+    ) {
+        super(accessorFunction, correspondingProperty, getName(correspondingProperty));
+        this.original = this;
+    }
+
     public void initialize(KotlinType returnType) {
         this.returnType = returnType == null ? getCorrespondingProperty().getType() : returnType;
     }
