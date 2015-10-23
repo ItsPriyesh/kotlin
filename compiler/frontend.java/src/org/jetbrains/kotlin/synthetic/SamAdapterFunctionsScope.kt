@@ -164,12 +164,10 @@ class SamAdapterFunctionsScope(storageManager: StorageManager) : KtScope by KtSc
                 kind: CallableMemberDescriptor.Kind,
                 newValueParameterDescriptors: MutableList<ValueParameterDescriptor>,
                 newExtensionReceiverParameterType: KotlinType?,
-                newReturnType: KotlinType
+                newReturnType: KotlinType,
+                name: Name?
         ): FunctionDescriptor? {
-            val descriptor = super<SimpleFunctionDescriptorImpl>.doSubstitute(
-                    originalSubstitutor, newOwner, newModality, newVisibility,
-                    newIsOperator, newIsInfix, newIsExternal, newIsInline, newIsTailrec, original,
-                    copyOverrides, kind, newValueParameterDescriptors, newExtensionReceiverParameterType, newReturnType)
+            val descriptor = super<SimpleFunctionDescriptorImpl>.doSubstitute(originalSubstitutor, newOwner, newModality, newVisibility, newIsOperator, newIsInfix, newIsExternal, newIsInline, newIsTailrec, original, copyOverrides, kind, newValueParameterDescriptors, newExtensionReceiverParameterType, newReturnType, null)
                 as MyFunctionDescriptor? ?: return null
 
             if (original == null) {

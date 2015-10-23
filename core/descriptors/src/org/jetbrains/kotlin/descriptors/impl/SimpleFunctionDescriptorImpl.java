@@ -109,6 +109,10 @@ public class SimpleFunctionDescriptorImpl extends FunctionDescriptorImpl impleme
     @NotNull
     @Override
     public SimpleFunctionDescriptor createRenamedCopy(@NotNull Name name) {
-        return (SimpleFunctionDescriptor) createSubstitutedCopy(getContainingDeclaration(), null, getKind(), name);
+        return (SimpleFunctionDescriptorImpl) doSubstitute(
+                TypeSubstitutor.EMPTY, getContainingDeclaration(), getModality(), getVisibility(),
+                isOperator(), isInfix(), isExternal(), isInline(), isTailrec(),
+                null, true, getKind(), getValueParameters(), getExtensionReceiverParameterType(), getReturnType(), name
+        );
     }
 }
