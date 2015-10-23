@@ -179,11 +179,11 @@ public class RedundantSamConstructorInspection : AbstractKotlinInspection() {
 
             // SAM adapters for member functions
             val resolutionScope = functionCall.getResolutionScope(bindingContext, functionCall.getResolutionFacade()).getImportingScopeChain()
-            val syntheticExtensions = resolutionScope.getSyntheticExtensionFunctions(
+            val syntheticExtensions = resolutionScope?.getSyntheticExtensionFunctions(
                     containingClass.defaultType.singletonList(),
                     functionResolvedCall.resultingDescriptor.name,
                     NoLookupLocation.FROM_IDE
-            )
+            ) ?: emptyList()
             for (syntheticExtension in syntheticExtensions) {
                 val samAdapter = syntheticExtension as? SamAdapterExtensionFunctionDescriptor ?: continue
                 if (isSamAdapterSuitableForCall(samAdapter, originalFunctionDescriptor, samConstructorCalls.size())) {
