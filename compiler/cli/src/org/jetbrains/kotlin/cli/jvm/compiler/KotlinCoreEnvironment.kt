@@ -237,9 +237,10 @@ public class KotlinCoreEnvironment private constructor(
         public fun createForProduction(
                 parentDisposable: Disposable, configuration: CompilerConfiguration, configFilePaths: List<String>
         ): KotlinCoreEnvironment {
+            val environment = KotlinCoreEnvironment(parentDisposable, getOrCreateApplicationEnvironmentForProduction(configuration, configFilePaths), configuration)
             // JPS may run many instances of the compiler in parallel (there's an option for compiling independent modules in parallel in IntelliJ)
             // All projects share the same ApplicationEnvironment, and when the last project is disposed, the ApplicationEnvironment is disposed as well
-            if (System.getProperty("kotlin.environment.keepalive") == null) {
+            if (System.getProperty("kotlin.environment.keepalive") == null || environment.application.isUnitTestMode) {
                 Disposer.register(parentDisposable, object : Disposable {
                     override fun dispose() {
                         synchronized (APPLICATION_LOCK) {
@@ -250,7 +251,6 @@ public class KotlinCoreEnvironment private constructor(
                     }
                 })
             }
-            val environment = KotlinCoreEnvironment(parentDisposable, getOrCreateApplicationEnvironmentForProduction(configuration, configFilePaths), configuration)
 
             synchronized (APPLICATION_LOCK) {
                 ourProjectCount++
